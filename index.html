@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>PetFinder 🐾</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+
+  <header id="navbar" class="hidden">
+
+    <div class="nav-container">
+
+      <div class="logo">
+        🐾 PetFinder
+      </div>
+
+      <nav>
+        <button id="findPetsBtn">
+          Find Pets
+        </button>
+
+        <button id="reportPetBtn">
+          Report Pet
+        </button>
+
+        <button id="myPostsBtn">
+          My Posts
+        </button>
+
+        <button id="logoutBtn" class="logout">
+          Logout
+        </button>
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================= AUTH ================= -->
+
+  <section id="authPage">
+
+    <div class="auth-container">
+
+      <div class="auth-card">
+
+        <div class="big-logo">
+          🐾
+        </div>
+
+        <h1>PetFinder</h1>
+
+        <p>
+          Help lost pets find their way home.
+        </p>
+
+        <div class="auth-tabs">
+
+          <button id="loginTab" class="active">
+            Login
+          </button>
+
+          <button id="signupTab">
+            Create Account
+          </button>
+
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <div id="loginForm">
+
+          <input
+            id="loginEmail"
+            type="email"
+            placeholder="Email"
+          >
+
+          <input
+            id="loginPassword"
+            type="password"
+            placeholder="Password"
+          >
+
+          <button
+            id="loginBtn"
+            class="primary-btn"
+          >
+            Login
+          </button>
+
+        </div>
+
+
+        <!-- SIGN UP -->
+
+        <div id="signupForm" class="hidden">
+
+          <input
+            id="signupName"
+            type="text"
+            placeholder="Your name"
+          >
+
+          <input
+            id="signupEmail"
+            type="email"
+            placeholder="Email"
+          >
+
+          <input
+            id="signupPassword"
+            type="password"
+            placeholder="Password"
+          >
+
+          <button
+            id="signupBtn"
+            class="primary-btn"
+          >
+            Create Account
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= MAIN APP ================= -->
+
+  <main id="mainApp" class="hidden">
+
+
+    <!-- ================= HOME ================= -->
+
+    <section id="homePage">
+
+      <div class="hero">
+
+        <div class="hero-content">
+
+          <span class="hero-label">
+            🐾 COMMUNITY PET RECOVERY
+          </span>
+
+          <h1>
+            Help bring them<br>
+            <span>home.</span>
+          </h1>
+
+          <p>
+            Search for lost pets in your area or report
+            a pet you've found.
+          </p>
+
+          <button
+            id="heroReportBtn"
+            class="hero-btn"
+          >
+            Report a Pet →
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- SEARCH -->
+
+      <div class="search-section">
+
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search by name, breed, color, or location..."
+        >
+
+      </div>
+
+
+      <!-- FILTERS -->
+
+      <div class="filter-container">
+
+        <button
+          class="filter active"
+          data-filter="all"
+        >
+          All
+        </button>
+
+        <button
+          class="filter"
+          data-filter="lost"
+        >
+          🔴 Lost Pets
+        </button>
+
+        <button
+          class="filter"
+          data-filter="found"
+        >
+          🟢 Found Pets
+        </button>
+
+      </div>
+
+
+      <!-- PET POSTS -->
+
+      <div
+        id="petGrid"
+        class="pet-grid"
+      ></div>
+
+    </section>
+
+
+    <!-- ================= REPORT PAGE ================= -->
+
+    <section
+      id="reportPage"
+      class="page hidden"
+    >
+
+      <div class="form-container">
+
+        <button
+          id="backFromReport"
+          class="back-btn"
+        >
+          ← Back
+        </button>
+
+        <h1>Report a Pet</h1>
+
+        <p class="form-description">
+          Create a report to help reunite a pet with
+          its family.
+        </p>
+
+
+        <!-- TYPE -->
+
+        <div class="type-selector">
+
+          <button
+            id="lostTypeBtn"
+            class="type-btn selected lost-type"
+          >
+            <span>🔴</span>
+
+            <strong>My pet is lost</strong>
+
+            <small>
+              I'm looking for my pet
+            </small>
+          </button>
+
+
+          <button
+            id="foundTypeBtn"
+            class="type-btn"
+          >
+            <span>🟢</span>
+
+            <strong>I found a pet</strong>
+
+            <small>
+              I found someone's pet
+            </small>
+          </button>
+
+        </div>
+
+
+        <!-- IMAGE -->
+
+        <label class="input-label">
+          Pet photo *
+        </label>
+
+        <div
+          id="imageDrop"
+          class="image-drop"
+        >
+
+          <div class="upload-icon">
+            📷
+          </div>
+
+          <p>
+            Click to upload a photo
+          </p>
+
+          <small>
+            JPG, PNG or WEBP
+          </small>
+
+          <input
+            id="petImage"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            hidden
+          >
+
+        </div>
+
+        <img
+          id="imagePreview"
+          class="image-preview hidden"
+        >
+
+
+        <!-- PET INFORMATION -->
+
+        <label class="input-label">
+          Pet name
+        </label>
+
+        <input
+          id="petName"
+          class="form-input"
+          type="text"
+          placeholder="Example: Max"
+        >
+
+
+        <div class="two-columns">
+
+          <div>
+
+            <label class="input-label">
+              Animal *
+            </label>
+
+            <select
+              id="animal"
+              class="form-input"
+            >
+
+              <option value="Dog">
+                🐶 Dog
+              </option>
+
+              <option value="Cat">
+                🐱 Cat
+              </option>
+
+              <option value="Bird">
+                🐦 Bird
+              </option>
+
+              <option value="Rabbit">
+                🐰 Rabbit
+              </option>
+
+              <option value="Other">
+                🐾 Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div>
+
+            <label class="input-label">
+              Breed
+            </label>
+
+            <input
+              id="breed"
+              class="form-input"
+              type="text"
+              placeholder="Example: Golden Retriever"
+            >
+
+          </div>
+
+        </div>
+
+
+        <label class="input-label">
+          Color / appearance
+        </label>
+
+        <input
+          id="color"
+          class="form-input"
+          type="text"
+          placeholder="Example: Brown with white chest"
+        >
+
+
+        <label class="input-label">
+          Location *
+        </label>
+
+        <input
+          id="location"
+          class="form-input"
+          type="text"
+          placeholder="Where was the pet lost/found?"
+        >
+
+
+        <label class="input-label">
+          Description *
+        </label>
+
+        <textarea
+          id="description"
+          class="form-input textarea"
+          placeholder="Describe the pet, where you saw them, collar details, etc."
+        ></textarea>
+
+
+        <label class="input-label">
+          Contact information *
+        </label>
+
+        <input
+          id="contact"
+          class="form-input"
+          type="text"
+          placeholder="Phone number or email"
+        >
+
+
+        <button
+          id="publishBtn"
+          class="publish-btn"
+        >
+          Publish Pet Report
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= MY POSTS ================= -->
+
+    <section
+      id="myPostsPage"
+      class="page hidden"
+    >
+
+      <div class="page-header">
+
+        <h1>My Posts</h1>
+
+        <p>
+          Manage your lost and found pet reports.
+        </p>
+
+      </div>
+
+      <div
+        id="myPostsGrid"
+        class="pet-grid"
+      ></div>
+
+    </section>
+
+
+  </main>
+
+
+  <!-- ================= LOADING ================= -->
+
+  <div
+    id="loading"
+    class="loading hidden"
+  >
+
+    <div class="spinner"></div>
+
+    <p>
+      Loading...
+    </p>
+
+  </div>
+
+
+  <!-- ================= TOAST ================= -->
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+
+  <script
+    type="module"
+    src="script.js"
+  ></script>
+
+</body>
+</html>
