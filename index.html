@@ -1,74 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="PetFinder helps lost and found pets reunite with their families in Santa Cruz, Bolivia."
+  >
 
   <title>PetFinder 🐾</title>
 
-  <link rel="stylesheet" href="style.css">
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIINfQ3jK0Q0v4K6hYQJ8H5n1Z7F4M2l3Y="
+    crossorigin=""
+  >
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
+
 
 <body>
 
-  <!-- ================= HEADER ================= -->
+  <!-- =====================================================
+       AUTH SCREEN
+  ====================================================== -->
 
-  <header id="navbar" class="hidden">
+  <section
+    id="authPage"
+    class="auth-page"
+  >
 
-    <div class="nav-container">
+    <div class="auth-wrapper">
 
-      <div class="logo">
-        🐾 PetFinder
-      </div>
+      <div class="auth-brand">
 
-      <nav>
-        <button id="findPetsBtn">
-          Find Pets
-        </button>
-
-        <button id="reportPetBtn">
-          Report Pet
-        </button>
-
-        <button id="myPostsBtn">
-          My Posts
-        </button>
-
-        <button id="logoutBtn" class="logout">
-          Logout
-        </button>
-      </nav>
-
-    </div>
-
-  </header>
-
-
-  <!-- ================= AUTH ================= -->
-
-  <section id="authPage">
-
-    <div class="auth-container">
-
-      <div class="auth-card">
-
-        <div class="big-logo">
+        <div class="brand-paw">
           🐾
         </div>
 
         <h1>PetFinder</h1>
 
         <p>
-          Help lost pets find their way home.
+          Helping lost pets find their way home.
         </p>
+
+      </div>
+
+
+      <div class="auth-card">
 
         <div class="auth-tabs">
 
-          <button id="loginTab" class="active">
+          <button
+            id="loginTab"
+            class="auth-tab active"
+          >
             Login
           </button>
 
-          <button id="signupTab">
+          <button
+            id="signupTab"
+            class="auth-tab"
+          >
             Create Account
           </button>
 
@@ -77,60 +84,102 @@
 
         <!-- LOGIN -->
 
-        <div id="loginForm">
+        <form
+          id="loginForm"
+          class="auth-form"
+        >
+
+          <label>
+            Email
+          </label>
 
           <input
             id="loginEmail"
             type="email"
-            placeholder="Email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
           >
+
+
+          <label>
+            Password
+          </label>
 
           <input
             id="loginPassword"
             type="password"
-            placeholder="Password"
+            placeholder="Your password"
+            autocomplete="current-password"
+            required
           >
 
+
           <button
-            id="loginBtn"
-            class="primary-btn"
+            type="submit"
+            class="primary-button"
           >
             Login
           </button>
 
-        </div>
+        </form>
 
 
-        <!-- SIGN UP -->
+        <!-- SIGNUP -->
 
-        <div id="signupForm" class="hidden">
+        <form
+          id="signupForm"
+          class="auth-form hidden"
+        >
+
+          <label>
+            Your name
+          </label>
 
           <input
             id="signupName"
             type="text"
             placeholder="Your name"
+            autocomplete="name"
+            required
           >
+
+
+          <label>
+            Email
+          </label>
 
           <input
             id="signupEmail"
             type="email"
-            placeholder="Email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
           >
+
+
+          <label>
+            Password
+          </label>
 
           <input
             id="signupPassword"
             type="password"
-            placeholder="Password"
+            placeholder="At least 6 characters"
+            autocomplete="new-password"
+            minlength="6"
+            required
           >
 
+
           <button
-            id="signupBtn"
-            class="primary-btn"
+            type="submit"
+            class="primary-button"
           >
             Create Account
           </button>
 
-        </div>
+        </form>
 
       </div>
 
@@ -139,377 +188,1401 @@
   </section>
 
 
-  <!-- ================= MAIN APP ================= -->
+  <!-- =====================================================
+       APP
+  ====================================================== -->
 
-  <main id="mainApp" class="hidden">
+  <div
+    id="app"
+    class="hidden"
+  >
 
 
-    <!-- ================= HOME ================= -->
+    <!-- ===================================================
+         NAVBAR
+    ==================================================== -->
 
-    <section id="homePage">
+    <header class="navbar">
 
-      <div class="hero">
+      <div class="nav-inner">
 
-        <div class="hero-content">
+        <button
+          class="logo-button"
+          id="logoButton"
+        >
 
-          <span class="hero-label">
-            🐾 COMMUNITY PET RECOVERY
+          <span>
+            🐾
           </span>
 
-          <h1>
-            Help bring them<br>
-            <span>home.</span>
-          </h1>
+          <strong>
+            PetFinder
+          </strong>
 
-          <p>
-            Search for lost pets in your area or report
-            a pet you've found.
-          </p>
+        </button>
+
+
+        <nav class="desktop-nav">
 
           <button
-            id="heroReportBtn"
-            class="hero-btn"
+            data-page="home"
+            class="nav-button active"
           >
-            Report a Pet →
+            Find Pets
+          </button>
+
+          <button
+            data-page="report"
+            class="nav-button"
+          >
+            Report Pet
+          </button>
+
+          <button
+            data-page="dashboard"
+            class="nav-button"
+          >
+            My Reports
+          </button>
+
+        </nav>
+
+
+        <div class="nav-user">
+
+          <span
+            id="navUserName"
+            class="nav-user-name"
+          >
+            User
+          </span>
+
+          <button
+            id="logoutButton"
+            class="logout-button"
+          >
+            Logout
           </button>
 
         </div>
 
       </div>
 
-
-      <!-- SEARCH -->
-
-      <div class="search-section">
-
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="Search by name, breed, color, or location..."
-        >
-
-      </div>
+    </header>
 
 
-      <!-- FILTERS -->
+    <!-- ===================================================
+         HOME
+    ==================================================== -->
 
-      <div class="filter-container">
-
-        <button
-          class="filter active"
-          data-filter="all"
-        >
-          All
-        </button>
-
-        <button
-          class="filter"
-          data-filter="lost"
-        >
-          🔴 Lost Pets
-        </button>
-
-        <button
-          class="filter"
-          data-filter="found"
-        >
-          🟢 Found Pets
-        </button>
-
-      </div>
+    <main
+      id="homePage"
+      class="page"
+    >
 
 
-      <!-- PET POSTS -->
+      <!-- HERO -->
 
-      <div
-        id="petGrid"
-        class="pet-grid"
-      ></div>
+      <section class="hero">
 
-    </section>
+        <div class="hero-content">
+
+          <div class="hero-label">
+            🐾 SANTA CRUZ PET COMMUNITY
+          </div>
+
+          <h1>
+            Help them find
+            <span>their way home.</span>
+          </h1>
+
+          <p>
+            Search for lost pets, report a pet you've found,
+            and help families reunite with their best friends.
+          </p>
 
 
-    <!-- ================= REPORT PAGE ================= -->
+          <div class="hero-actions">
 
-    <section
+            <button
+              id="lostHeroButton"
+              class="hero-button lost"
+            >
+              🔴 I Lost My Pet
+            </button>
+
+            <button
+              id="foundHeroButton"
+              class="hero-button found"
+            >
+              🟢 I Found a Pet
+            </button>
+
+          </div>
+
+
+          <div class="hero-search">
+
+            <span>
+              🔎
+            </span>
+
+            <input
+              id="globalSearch"
+              type="search"
+              placeholder="Search by name, breed, color, or location..."
+            >
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- STATS -->
+
+      <section class="stats-section">
+
+        <div class="stat-card">
+
+          <span>
+            🔴
+          </span>
+
+          <strong id="lostCount">
+            0
+          </strong>
+
+          <small>
+            Lost Pets
+          </small>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <span>
+            🟢
+          </span>
+
+          <strong id="foundCount">
+            0
+          </strong>
+
+          <small>
+            Found Pets
+          </small>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <span>
+            ❤️
+          </span>
+
+          <strong id="reunitedCount">
+            0
+          </strong>
+
+          <small>
+            Reunited
+          </small>
+
+        </div>
+
+      </section>
+
+
+      <!-- MAP AREA -->
+
+      <section class="map-section">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="eyebrow">
+              EXPLORE SANTA CRUZ
+            </span>
+
+            <h2>
+              Lost & Found Pets Near You
+            </h2>
+
+            <p>
+              Click a marker to see a pet report.
+            </p>
+
+          </div>
+
+
+          <button
+            id="locateButton"
+            class="location-button"
+          >
+            📍 Use My Location
+          </button>
+
+        </div>
+
+
+        <div class="map-layout">
+
+
+          <!-- REPORT LIST -->
+
+          <aside class="report-sidebar">
+
+            <div class="filter-row">
+
+              <button
+                class="filter-button active"
+                data-filter="all"
+              >
+                All
+              </button>
+
+              <button
+                class="filter-button"
+                data-filter="lost"
+              >
+                🔴 Lost
+              </button>
+
+              <button
+                class="filter-button"
+                data-filter="found"
+              >
+                🟢 Found
+              </button>
+
+            </div>
+
+
+            <div
+              id="reportList"
+              class="report-list"
+            ></div>
+
+          </aside>
+
+
+          <!-- MAP -->
+
+          <div
+            id="petMap"
+            class="pet-map"
+          ></div>
+
+        </div>
+
+      </section>
+
+
+      <!-- HOW IT WORKS -->
+
+      <section class="how-section">
+
+        <div class="section-heading centered">
+
+          <span class="eyebrow">
+            SIMPLE & FAST
+          </span>
+
+          <h2>
+            How PetFinder Works
+          </h2>
+
+        </div>
+
+
+        <div class="steps-grid">
+
+          <article class="step-card">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div class="step-icon">
+              📸
+            </div>
+
+            <h3>
+              Report
+            </h3>
+
+            <p>
+              Upload a photo and tell the community
+              where the pet was lost or found.
+            </p>
+
+          </article>
+
+
+          <article class="step-card">
+
+            <div class="step-number">
+              2
+            </div>
+
+            <div class="step-icon">
+              🗺️
+            </div>
+
+            <h3>
+              Search
+            </h3>
+
+            <p>
+              Explore the interactive Santa Cruz map
+              and search reports near you.
+            </p>
+
+          </article>
+
+
+          <article class="step-card">
+
+            <div class="step-number">
+              3
+            </div>
+
+            <div class="step-icon">
+              ❤️
+            </div>
+
+            <h3>
+              Reunite
+            </h3>
+
+            <p>
+              Contact the reporter and help bring
+              the pet safely back home.
+            </p>
+
+          </article>
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- ===================================================
+         REPORT PAGE
+    ==================================================== -->
+
+    <main
       id="reportPage"
       class="page hidden"
     >
 
-      <div class="form-container">
+      <div class="wizard-wrapper">
 
         <button
           id="backFromReport"
-          class="back-btn"
+          class="back-button"
         >
-          ← Back
+          ← Back to pets
         </button>
 
-        <h1>Report a Pet</h1>
 
-        <p class="form-description">
-          Create a report to help reunite a pet with
-          its family.
-        </p>
+        <div class="wizard-header">
 
+          <span class="eyebrow">
+            CREATE REPORT
+          </span>
 
-        <!-- TYPE -->
-
-        <div class="type-selector">
-
-          <button
-            id="lostTypeBtn"
-            class="type-btn selected lost-type"
-          >
-            <span>🔴</span>
-
-            <strong>My pet is lost</strong>
-
-            <small>
-              I'm looking for my pet
-            </small>
-          </button>
-
-
-          <button
-            id="foundTypeBtn"
-            class="type-btn"
-          >
-            <span>🟢</span>
-
-            <strong>I found a pet</strong>
-
-            <small>
-              I found someone's pet
-            </small>
-          </button>
-
-        </div>
-
-
-        <!-- IMAGE -->
-
-        <label class="input-label">
-          Pet photo *
-        </label>
-
-        <div
-          id="imageDrop"
-          class="image-drop"
-        >
-
-          <div class="upload-icon">
-            📷
-          </div>
+          <h1>
+            Help a pet find home.
+          </h1>
 
           <p>
-            Click to upload a photo
+            A few details can make a huge difference.
           </p>
 
-          <small>
-            JPG, PNG or WEBP
-          </small>
+        </div>
 
-          <input
-            id="petImage"
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            hidden
+
+        <!-- PROGRESS -->
+
+        <div class="wizard-progress">
+
+          <div
+            class="progress-step active"
+            data-progress="1"
+          >
+            <span>1</span>
+            <small>Situation</small>
+          </div>
+
+          <div
+            class="progress-line"
+          ></div>
+
+          <div
+            class="progress-step"
+            data-progress="2"
+          >
+            <span>2</span>
+            <small>Pet</small>
+          </div>
+
+          <div
+            class="progress-line"
+          ></div>
+
+          <div
+            class="progress-step"
+            data-progress="3"
+          >
+            <span>3</span>
+            <small>Location</small>
+          </div>
+
+          <div
+            class="progress-line"
+          ></div>
+
+          <div
+            class="progress-step"
+            data-progress="4"
+          >
+            <span>4</span>
+            <small>Contact</small>
+          </div>
+
+          <div
+            class="progress-line"
+          ></div>
+
+          <div
+            class="progress-step"
+            data-progress="5"
+          >
+            <span>5</span>
+            <small>Preview</small>
+          </div>
+
+        </div>
+
+
+        <div class="wizard-card">
+
+
+          <!-- STEP 1 -->
+
+          <section
+            class="wizard-step active"
+            data-step="1"
           >
 
-        </div>
+            <div class="wizard-step-heading">
 
-        <img
-          id="imagePreview"
-          class="image-preview hidden"
-        >
+              <span class="big-step-icon">
+                🐾
+              </span>
+
+              <div>
+
+                <h2>
+                  What happened?
+                </h2>
+
+                <p>
+                  Tell us what you're reporting.
+                </p>
+
+              </div>
+
+            </div>
 
 
-        <!-- PET INFORMATION -->
+            <div class="situation-grid">
 
-        <label class="input-label">
-          Pet name
-        </label>
+              <button
+                type="button"
+                class="situation-card selected lost"
+                data-situation="lost"
+              >
 
-        <input
-          id="petName"
-          class="form-input"
-          type="text"
-          placeholder="Example: Max"
-        >
+                <span class="situation-icon">
+                  🔴
+                </span>
+
+                <strong>
+                  My pet is lost
+                </strong>
+
+                <small>
+                  I'm looking for my pet.
+                </small>
+
+              </button>
 
 
-        <div class="two-columns">
+              <button
+                type="button"
+                class="situation-card found"
+                data-situation="found"
+              >
 
-          <div>
+                <span class="situation-icon">
+                  🟢
+                </span>
 
-            <label class="input-label">
-              Animal *
+                <strong>
+                  I found a pet
+                </strong>
+
+                <small>
+                  I found someone's pet.
+                </small>
+
+              </button>
+
+            </div>
+
+
+            <div class="wizard-actions">
+
+              <button
+                type="button"
+                class="primary-button next-step"
+              >
+                Continue →
+              </button>
+
+            </div>
+
+          </section>
+
+
+          <!-- STEP 2 -->
+
+          <section
+            class="wizard-step"
+            data-step="2"
+          >
+
+            <div class="wizard-step-heading">
+
+              <span class="big-step-icon">
+                📸
+              </span>
+
+              <div>
+
+                <h2>
+                  Tell us about the pet
+                </h2>
+
+                <p>
+                  The more details you provide,
+                  the easier it is to identify them.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <!-- PHOTO -->
+
+            <label class="field-label">
+              Pet photo *
             </label>
 
-            <select
-              id="animal"
-              class="form-input"
+            <div
+              id="photoDrop"
+              class="photo-drop"
             >
 
-              <option value="Dog">
-                🐶 Dog
-              </option>
+              <div class="upload-symbol">
+                📷
+              </div>
 
-              <option value="Cat">
-                🐱 Cat
-              </option>
+              <strong>
+                Upload a clear photo
+              </strong>
 
-              <option value="Bird">
-                🐦 Bird
-              </option>
+              <small>
+                JPG, PNG or WEBP · Max 10MB
+              </small>
 
-              <option value="Rabbit">
-                🐰 Rabbit
-              </option>
+              <input
+                id="petImage"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                hidden
+              >
 
-              <option value="Other">
-                🐾 Other
-              </option>
-
-            </select>
-
-          </div>
+            </div>
 
 
-          <div>
-
-            <label class="input-label">
-              Breed
-            </label>
-
-            <input
-              id="breed"
-              class="form-input"
-              type="text"
-              placeholder="Example: Golden Retriever"
+            <img
+              id="photoPreview"
+              class="photo-preview hidden"
+              alt="Pet preview"
             >
 
-          </div>
+
+            <div class="form-grid two">
+
+              <div class="field">
+
+                <label
+                  class="field-label"
+                  for="petName"
+                >
+                  Pet name
+                </label>
+
+                <input
+                  id="petName"
+                  class="form-input"
+                  type="text"
+                  placeholder="Example: Max"
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label
+                  class="field-label"
+                  for="animal"
+                >
+                  Animal *
+                </label>
+
+                <select
+                  id="animal"
+                  class="form-input"
+                >
+
+                  <option value="Dog">
+                    🐶 Dog
+                  </option>
+
+                  <option value="Cat">
+                    🐱 Cat
+                  </option>
+
+                  <option value="Bird">
+                    🐦 Bird
+                  </option>
+
+                  <option value="Rabbit">
+                    🐰 Rabbit
+                  </option>
+
+                  <option value="Other">
+                    🐾 Other
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+
+            <div class="form-grid two">
+
+              <div class="field">
+
+                <label
+                  class="field-label"
+                  for="breed"
+                >
+                  Breed
+                </label>
+
+                <input
+                  id="breed"
+                  class="form-input"
+                  type="text"
+                  placeholder="Golden Retriever"
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label
+                  class="field-label"
+                  for="color"
+                >
+                  Color
+                </label>
+
+                <input
+                  id="color"
+                  class="form-input"
+                  type="text"
+                  placeholder="Golden / white"
+                >
+
+              </div>
+
+            </div>
+
+
+            <div class="form-grid two">
+
+              <div class="field">
+
+                <label
+                  class="field-label"
+                  for="sex"
+                >
+                  Sex
+                </label>
+
+                <select
+                  id="sex"
+                  class="form-input"
+                >
+
+                  <option value="">
+                    Select
+                  </option>
+
+                  <option value="Male">
+                    Male
+                  </option>
+
+                  <option value="Female">
+                    Female
+                  </option>
+
+                  <option value="Unknown">
+                    Unknown
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <div class="field">
+
+                <label
+                  class="field-label"
+                  for="age"
+                >
+                  Approximate age
+                </label>
+
+                <input
+                  id="age"
+                  class="form-input"
+                  type="text"
+                  placeholder="4 years"
+                >
+
+              </div>
+
+            </div>
+
+
+            <div class="field">
+
+              <label
+                class="field-label"
+                for="identification"
+              >
+                Collar / identification details
+              </label>
+
+              <input
+                id="identification"
+                class="form-input"
+                type="text"
+                placeholder="Blue collar, tag, microchip, etc."
+              >
+
+            </div>
+
+
+            <div class="wizard-actions">
+
+              <button
+                type="button"
+                class="secondary-button previous-step"
+              >
+                ← Back
+              </button>
+
+              <button
+                type="button"
+                class="primary-button next-step"
+              >
+                Continue →
+              </button>
+
+            </div>
+
+          </section>
+
+
+          <!-- STEP 3 -->
+
+          <section
+            class="wizard-step"
+            data-step="3"
+          >
+
+            <div class="wizard-step-heading">
+
+              <span class="big-step-icon">
+                📍
+              </span>
+
+              <div>
+
+                <h2>
+                  Where & when?
+                </h2>
+
+                <p id="locationInstruction">
+                  Where was your pet last seen?
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="field">
+
+              <label
+                class="field-label"
+                for="locationAddress"
+              >
+                Location *
+              </label>
+
+              <input
+                id="locationAddress"
+                class="form-input"
+                type="text"
+                placeholder="Example: Equipetrol, Santa Cruz"
+              >
+
+            </div>
+
+
+            <div class="map-picker-wrapper">
+
+              <div
+                id="pickerMap"
+                class="picker-map"
+              ></div>
+
+              <div class="map-picker-help">
+                📍 Click the map to select the exact location.
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              id="reportLocateButton"
+              class="outline-button"
+            >
+              📍 Use My Current Location
+            </button>
+
+
+            <div class="coordinates-display">
+
+              <span>
+                Selected coordinates:
+              </span>
+
+              <strong id="coordinatesText">
+                Not selected
+              </strong>
+
+            </div>
+
+
+            <div class="form-grid two">
+
+              <div class="field">
+
+                <label
+                  class="field-label"
+                  for="reportDate"
+                >
+                  Date *
+                </label>
+
+                <input
+                  id="reportDate"
+                  class="form-input"
+                  type="date"
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label
+                  class="field-label"
+                  for="reportTime"
+                >
+                  Approximate time
+                </label>
+
+                <input
+                  id="reportTime"
+                  class="form-input"
+                  type="time"
+                >
+
+              </div>
+
+            </div>
+
+
+            <div class="field">
+
+              <label
+                class="field-label"
+                for="description"
+              >
+                Description *
+              </label>
+
+              <textarea
+                id="description"
+                class="form-input textarea"
+                placeholder="Describe what happened, where you saw the pet, behavior, distinguishing features..."
+              ></textarea>
+
+            </div>
+
+
+            <div class="wizard-actions">
+
+              <button
+                type="button"
+                class="secondary-button previous-step"
+              >
+                ← Back
+              </button>
+
+              <button
+                type="button"
+                class="primary-button next-step"
+              >
+                Continue →
+              </button>
+
+            </div>
+
+          </section>
+
+
+          <!-- STEP 4 -->
+
+          <section
+            class="wizard-step"
+            data-step="4"
+          >
+
+            <div class="wizard-step-heading">
+
+              <span class="big-step-icon">
+                📞
+              </span>
+
+              <div>
+
+                <h2>
+                  How can people reach you?
+                </h2>
+
+                <p>
+                  Your contact information will be shown
+                  with your report.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="field">
+
+              <label
+                class="field-label"
+                for="contact"
+              >
+                Phone or email *
+              </label>
+
+              <input
+                id="contact"
+                class="form-input"
+                type="text"
+                placeholder="+591 70000000 or email@example.com"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label
+                class="field-label"
+                for="preferredContact"
+              >
+                Preferred contact method
+              </label>
+
+              <select
+                id="preferredContact"
+                class="form-input"
+              >
+
+                <option value="Phone">
+                  📞 Phone
+                </option>
+
+                <option value="WhatsApp">
+                  💬 WhatsApp
+                </option>
+
+                <option value="Email">
+                  ✉️ Email
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="privacy-notice">
+
+              🔐 <strong>Your information matters.</strong>
+
+              <p>
+                Only information you intentionally provide
+                in this report will be displayed to other users.
+              </p>
+
+            </div>
+
+
+            <div class="wizard-actions">
+
+              <button
+                type="button"
+                class="secondary-button previous-step"
+              >
+                ← Back
+              </button>
+
+              <button
+                type="button"
+                class="primary-button next-step"
+              >
+                Preview Report →
+              </button>
+
+            </div>
+
+          </section>
+
+
+          <!-- STEP 5 -->
+
+          <section
+            class="wizard-step"
+            data-step="5"
+          >
+
+            <div class="wizard-step-heading">
+
+              <span class="big-step-icon">
+                👀
+              </span>
+
+              <div>
+
+                <h2>
+                  Preview your report
+                </h2>
+
+                <p>
+                  This is what other PetFinder users will see.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div
+              id="previewContainer"
+              class="preview-container"
+            ></div>
+
+
+            <div class="wizard-actions">
+
+              <button
+                type="button"
+                class="secondary-button previous-step"
+              >
+                ← Edit
+              </button>
+
+              <button
+                type="button"
+                id="publishButton"
+                class="primary-button"
+              >
+                🐾 Publish Report
+              </button>
+
+            </div>
+
+          </section>
 
         </div>
-
-
-        <label class="input-label">
-          Color / appearance
-        </label>
-
-        <input
-          id="color"
-          class="form-input"
-          type="text"
-          placeholder="Example: Brown with white chest"
-        >
-
-
-        <label class="input-label">
-          Location *
-        </label>
-
-        <input
-          id="location"
-          class="form-input"
-          type="text"
-          placeholder="Where was the pet lost/found?"
-        >
-
-
-        <label class="input-label">
-          Description *
-        </label>
-
-        <textarea
-          id="description"
-          class="form-input textarea"
-          placeholder="Describe the pet, where you saw them, collar details, etc."
-        ></textarea>
-
-
-        <label class="input-label">
-          Contact information *
-        </label>
-
-        <input
-          id="contact"
-          class="form-input"
-          type="text"
-          placeholder="Phone number or email"
-        >
-
-
-        <button
-          id="publishBtn"
-          class="publish-btn"
-        >
-          Publish Pet Report
-        </button>
 
       </div>
 
-    </section>
+    </main>
 
 
-    <!-- ================= MY POSTS ================= -->
+    <!-- ===================================================
+         DASHBOARD
+    ==================================================== -->
 
-    <section
-      id="myPostsPage"
+    <main
+      id="dashboardPage"
       class="page hidden"
     >
 
-      <div class="page-header">
+      <section class="dashboard-header">
 
-        <h1>My Posts</h1>
+        <div>
 
-        <p>
-          Manage your lost and found pet reports.
-        </p>
+          <span class="eyebrow">
+            MY ACCOUNT
+          </span>
+
+          <h1>
+            My Reports
+          </h1>
+
+          <p>
+            Manage your lost and found pet reports.
+          </p>
+
+        </div>
+
+
+        <button
+          id="dashboardReportButton"
+          class="primary-button"
+        >
+          + New Report
+        </button>
+
+      </section>
+
+
+      <section class="dashboard-stats">
+
+        <div>
+          <span>🔴</span>
+          <strong id="myLostCount">0</strong>
+          <small>Lost</small>
+        </div>
+
+        <div>
+          <span>🟢</span>
+          <strong id="myFoundCount">0</strong>
+          <small>Found</small>
+        </div>
+
+      </section>
+
+
+      <section>
+
+        <div
+          id="myReportsGrid"
+          class="my-reports-grid"
+        ></div>
+
+      </section>
+
+    </main>
+
+
+    <!-- ===================================================
+         PET DETAILS MODAL
+    ==================================================== -->
+
+    <dialog
+      id="petModal"
+      class="pet-modal"
+    >
+
+      <button
+        id="closePetModal"
+        class="modal-close"
+        aria-label="Close"
+      >
+        ✕
+      </button>
+
+      <div
+        id="petModalContent"
+        class="modal-content"
+      ></div>
+
+    </dialog>
+
+
+    <!-- ===================================================
+         REUNITED MODAL
+    ==================================================== -->
+
+    <dialog
+      id="reunitedModal"
+      class="confirmation-modal"
+    >
+
+      <div class="confirmation-icon">
+        ❤️🐾
+      </div>
+
+      <h2>
+        Is the pet safely home?
+      </h2>
+
+      <p>
+        Once confirmed, this report and its photo
+        will be permanently removed.
+      </p>
+
+      <div class="modal-actions">
+
+        <button
+          id="cancelReunited"
+          class="secondary-button"
+        >
+          Cancel
+        </button>
+
+        <button
+          id="confirmReunited"
+          class="success-button"
+        >
+          Yes, They're Home
+        </button>
 
       </div>
 
-      <div
-        id="myPostsGrid"
-        class="pet-grid"
-      ></div>
-
-    </section>
+    </dialog>
 
 
-  </main>
+    <!-- ===================================================
+         SUCCESS MODAL
+    ==================================================== -->
+
+    <dialog
+      id="successModal"
+      class="confirmation-modal"
+    >
+
+      <div class="confirmation-icon">
+        🎉
+      </div>
+
+      <h2>
+        Amazing!
+      </h2>
+
+      <p>
+        The report has been removed.
+        We're glad the pet is home. ❤️
+      </p>
+
+      <button
+        id="closeSuccess"
+        class="primary-button"
+      >
+        Continue
+      </button>
+
+    </dialog>
 
 
-  <!-- ================= LOADING ================= -->
+    <!-- ===================================================
+         TOAST
+    ==================================================== -->
 
-  <div
-    id="loading"
-    class="loading hidden"
-  >
+    <div
+      id="toast"
+      class="toast"
+    ></div>
 
-    <div class="spinner"></div>
 
-    <p>
-      Loading...
-    </p>
+    <!-- ===================================================
+         LOADING
+    ==================================================== -->
+
+    <div
+      id="loading"
+      class="loading hidden"
+    >
+
+      <div class="spinner"></div>
+
+      <p>
+        Please wait...
+      </p>
+
+    </div>
+
 
   </div>
 
 
-  <!-- ================= TOAST ================= -->
+  <!-- Leaflet -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
 
-  <div
-    id="toast"
-    class="toast"
-  ></div>
 
-
+  <!-- App -->
   <script
     type="module"
     src="script.js"
   ></script>
 
 </body>
+
 </html>
