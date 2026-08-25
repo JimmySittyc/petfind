@@ -11,14 +11,14 @@
 
   <style>
     /* =====================================================
-       PETCO-INSPIRED THEME (RED & WHITE)
+        PETCO-INSPIRED THEME (RED & WHITE)
     ====================================================== */
     :root {
       --primary-red: #e31837;
       --primary-red-hover: #c4122d;
       --bg-white: #ffffff;
       --bg-light-gray: #f4f6f8;
-      --text-dark: #001952; /* Deep blue/black for readable text */
+      --text-dark: #001952;
       --text-gray: #666666;
       --border-color: #e0e0e0;
       --radius-sm: 8px;
@@ -49,22 +49,21 @@
     /* FORMS */
     .form-input, .textarea, select {
       width: 100%; padding: 12px; border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm); margin-top: 6px; font-size: 1rem;
+      border-radius: var(--radius-sm); margin-top: 6px; font-size: 1rem; background: white;
     }
-    .field-label { font-weight: 600; font-size: 0.9rem; color: var(--text-dark); }
+    .field-label { font-weight: 600; font-size: 0.9rem; color: var(--text-dark); display: block; margin-top: 15px; }
 
     /* NAVBAR */
     .navbar { background-color: var(--bg-white); border-bottom: 1px solid var(--border-color); padding: 16px 5%; position: sticky; top: 0; z-index: 100; }
     .nav-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
     .logo-button { background: none; border: none; font-size: 1.5rem; font-weight: 800; color: var(--primary-red); display: flex; align-items: center; gap: 8px; }
-    .desktop-nav { display: flex; gap: 20px; }
+    .desktop-nav { display: flex; gap: 10px; }
     .nav-button { background: none; border: none; font-size: 1rem; color: var(--text-gray); font-weight: 600; padding: 8px 12px; border-radius: var(--radius-pill); }
     .nav-button.active, .nav-button:hover { color: var(--primary-red); background-color: #fdf0f1; }
     .nav-user { display: flex; align-items: center; gap: 15px; }
 
-    /* APPNE.PNG SLIDE 1: PET GRID & MAP LAYOUT */
+    /* APP LAYOUT */
     .page-container { max-width: 1200px; margin: 40px auto; padding: 0 5%; }
-    
     .view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
     .view-header h2 { font-size: 1.8rem; color: var(--text-dark); }
     
@@ -74,7 +73,7 @@
       display: flex; align-items: center; gap: 8px;
     }
 
-    /* PET GRID (References appne.png) */
+    /* PET GRID */
     .pet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; }
     .pet-card {
       background: var(--bg-white); border-radius: var(--radius-md); overflow: hidden;
@@ -89,23 +88,24 @@
     .pet-card-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 4px; }
     .pet-card-desc { font-size: 0.9rem; color: var(--text-gray); }
 
-    /* APPNE.PNG SLIDE 2: MAP VIEW */
+    /* MAP VIEW */
     .map-container { height: 500px; width: 100%; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); }
     
-    /* APPNE_1.PNG: DETAIL MODAL LAYOUT */
+    /* REPORT CARD */
+    .form-card { background: white; padding: 30px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); max-width: 700px; margin: 0 auto; }
+
+    /* DETAIL MODAL */
     .pet-modal { border: none; border-radius: var(--radius-md); max-width: 800px; width: 90%; margin: auto; padding: 0; box-shadow: var(--shadow-md); }
     .pet-modal::backdrop { background: rgba(0,0,0,0.5); }
-    .modal-content { display: flex; flex-direction: column; gap: 20px; padding: 30px; }
+    .modal-content { display: flex; flex-direction: column; gap: 20px; padding: 30px; position: relative; }
     .modal-close { position: absolute; top: 15px; right: 15px; background: #f1f1f1; border: none; border-radius: 50%; width: 35px; height: 35px; font-weight: bold; cursor: pointer; }
-    
-    /* Specific Lost/Found split layouts inside modal */
     .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     @media (max-width: 768px) { .detail-grid { grid-template-columns: 1fr; } }
     .detail-img-box { background: #eee; border-radius: var(--radius-md); height: 300px; width: 100%; object-fit: cover; }
     .detail-info-box { background: var(--bg-light-gray); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
     .detail-info-box h3 { margin-bottom: 10px; color: var(--primary-red); }
 
-    /* AUTH PAGE STYLING */
+    /* AUTH PAGE */
     .auth-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
     .auth-card { background: white; padding: 40px; border-radius: var(--radius-md); box-shadow: var(--shadow-md); max-width: 400px; width: 100%; text-align: center; }
     .auth-card h1 { color: var(--primary-red); margin-bottom: 10px; }
@@ -113,18 +113,15 @@
     .auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
     .auth-tab { flex: 1; padding: 10px; border: none; background: #eee; border-radius: var(--radius-pill); font-weight: bold; color: var(--text-gray); }
     .auth-tab.active { background: var(--primary-red); color: white; }
-
   </style>
 </head>
 
 <body>
 
-  <!-- =====================================================
-  AUTH SCREEN
-  ====================================================== -->
+  <!-- AUTH SCREEN -->
   <section id="authPage" class="auth-page">
     <div class="auth-card">
-      <h1>PetFinder</h1>
+      <h1>🐾 PetFinder</h1>
       <p style="color: var(--text-gray); margin-bottom: 20px;">Helping lost pets find their way home.</p>
       
       <div class="auth-tabs">
@@ -134,27 +131,24 @@
 
       <form id="loginForm" class="auth-form">
         <div>
-          <label class="field-label">Email</label>
-          <input type="email" class="form-input" placeholder="you@example.com" required>
+          <label class="field-label" style="margin-top:0;">Email</label>
+          <input type="email" class="form-input" placeholder="you@example.com" value="user@example.com" required>
         </div>
         <div>
           <label class="field-label">Password</label>
-          <input type="password" class="form-input" placeholder="Your password" required>
+          <input type="password" class="form-input" placeholder="Your password" value="password" required>
         </div>
         <button type="submit" class="primary-button" style="margin-top: 10px;">Login</button>
       </form>
     </div>
   </section>
 
-
-  <!-- =====================================================
-  APP SHELL
-  ====================================================== -->
+  <!-- APP SHELL -->
   <div id="app" class="hidden">
     
     <header class="navbar">
       <div class="nav-inner">
-        <button class="logo-button" id="logoButton">
+        <button class="logo-button" data-page="home">
           🐾 PetFinder
         </button>
         
@@ -171,14 +165,10 @@
       </div>
     </header>
 
-    <!-- ===================================================
-    HOME / PET GRID (From appne.png Slide 1 & 2)
-    ==================================================== -->
+    <!-- HOME / PET GRID VIEW -->
     <main id="homePage" class="page-container">
-      
       <div class="view-header">
         <h2>Pets Found & Lost in Santa Cruz</h2>
-        <!-- PetMap toggle button from sketch -->
         <button id="toggleMapBtn" class="map-toggle-btn">
           📍 PetMap View
         </button>
@@ -186,73 +176,69 @@
 
       <!-- LIST VIEW -->
       <div id="listView" class="pet-grid">
-        
-        <!-- Example Card 1 -->
-        <div class="pet-card">
-          <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&q=80" alt="Dog" class="pet-card-img">
-          <div class="pet-card-info">
-            <span class="pet-card-status status-lost">Lost</span>
-            <div class="pet-card-title">Max (Golden Retriever)</div>
-            <div class="pet-card-desc">Last seen near Equipetrol. Friendly but shy.</div>
-            <button class="outline-button" style="width:100%; margin-top: 15px;" onclick="document.getElementById('petModal').showModal()">Info about pet</button>
-          </div>
-        </div>
-
-        <!-- Example Card 2 -->
-        <div class="pet-card">
-          <div class="pet-card-img" style="background: url('https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80') center/cover;"></div>
-          <div class="pet-card-info">
-            <span class="pet-card-status status-found">Found</span>
-            <div class="pet-card-title">Unknown Cat (Tabby)</div>
-            <div class="pet-card-desc">Found wearing a blue collar in Urubo.</div>
-            <button class="outline-button" style="width:100%; margin-top: 15px;" onclick="document.getElementById('petModal').showModal()">Info about pet</button>
-          </div>
-        </div>
-        
+        <!-- Dynamically rendered cards go here -->
       </div>
 
-      <!-- MAP VIEW (Hidden by default) -->
+      <!-- MAP VIEW -->
       <div id="mapView" class="hidden">
-        <p style="margin-bottom: 15px; color: var(--text-gray);">Choose location to see lost/found pets within a 5km radius.</p>
+        <p style="margin-bottom: 15px; color: var(--text-gray);">Showing lost/found pets across Santa Cruz.</p>
         <div id="petMap" class="map-container"></div>
       </div>
-
     </main>
+
+    <!-- REPORT PET VIEW -->
+    <main id="reportPage" class="page-container hidden">
+      <div class="form-card">
+        <h2 style="color: var(--primary-red); margin-bottom: 5px;">Report a Lost or Found Pet</h2>
+        <p style="color: var(--text-gray); margin-bottom: 20px;">Fill out the details below to notify the community.</p>
+        
+        <form id="reportForm">
+          <label class="field-label" style="margin-top:0;">Report Type</label>
+          <select id="reportStatus" class="form-input" required>
+            <option value="Lost">Lost Pet</option>
+            <option value="Found">Found Pet</option>
+          </select>
+
+          <label class="field-label">Pet Name or Description</label>
+          <input type="text" id="reportName" class="form-input" placeholder="e.g. Max or Brown Puppy" required>
+
+          <label class="field-label">Breed / Type</label>
+          <input type="text" id="reportBreed" class="form-input" placeholder="e.g. Golden Retriever, Tabby Cat" required>
+
+          <label class="field-label">Last Seen / Found Location</label>
+          <input type="text" id="reportLocation" class="form-input" placeholder="e.g. Equipetrol, Santa Cruz" required>
+
+          <label class="field-label">Contact Phone Number</label>
+          <input type="text" id="reportPhone" class="form-input" placeholder="+591 7000-0000" required>
+
+          <label class="field-label">Additional Details & Characteristics</label>
+          <textarea id="reportDesc" class="textarea" rows="4" placeholder="Describe collar, behavior, specific marks..." required></textarea>
+
+          <label class="field-label">Image URL</label>
+          <input type="url" id="reportImg" class="form-input" placeholder="https://images.unsplash.com/..." value="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=400&q=80" required>
+
+          <button type="submit" class="primary-button" style="width: 100%; margin-top: 25px;">Submit Report</button>
+        </form>
+      </div>
+    </main>
+
+    <!-- DASHBOARD VIEW -->
+    <main id="dashboardPage" class="page-container hidden">
+      <div class="view-header">
+        <h2>My Submitted Reports</h2>
+      </div>
+      <div id="userReportsView" class="pet-grid">
+        <!-- User submitted items will show here -->
+      </div>
+    </main>
+
   </div>
 
-
-  <!-- ===================================================
-  PET DETAILS MODAL (From appne_1.png)
-  ==================================================== -->
+  <!-- PET DETAILS MODAL -->
   <dialog id="petModal" class="pet-modal">
     <button class="modal-close" onclick="document.getElementById('petModal').close()">✕</button>
-    
-    <div class="modal-content">
-      <h2 style="text-align: center; border-bottom: 2px solid var(--bg-light-gray); padding-bottom: 15px;">Lost Pet Details</h2>
-      
-      <div class="detail-grid">
-        <!-- Left Side: Image -->
-        <div>
-          <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=800&q=80" alt="Pet Image" class="detail-img-box">
-        </div>
-        
-        <!-- Right Side: Info Blocks matching sketch -->
-        <div style="display: flex; flex-direction: column; gap: 15px;">
-          
-          <div class="detail-info-box">
-            <h3>Name, Race & Contact</h3>
-            <p><strong>Name:</strong> Max</p>
-            <p><strong>Race/Breed:</strong> Golden Retriever</p>
-            <p><strong>Owner Phone:</strong> +591 7000-0000</p>
-          </div>
-
-          <div class="detail-info-box">
-            <h3>Characteristics & Info</h3>
-            <p>Light golden coat, wearing a red collar. He is very friendly but gets scared by loud noises. If found, please approach slowly and offer treats.</p>
-          </div>
-
-        </div>
-      </div>
+    <div class="modal-content" id="modalBody">
+      <!-- Dynamic modal content -->
     </div>
   </dialog>
 
@@ -260,13 +246,72 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
   <script>
-    // Simple script to demonstrate the Map/List toggle from appne.png
+    // State management for pets data
+    let petsData = [
+      {
+        id: 1,
+        status: 'Lost',
+        name: 'Max (Golden Retriever)',
+        breed: 'Golden Retriever',
+        location: 'Equipetrol, Santa Cruz',
+        phone: '+591 7000-0000',
+        desc: 'Last seen near Equipetrol. Friendly but shy. Wearing a red collar.',
+        img: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&q=80',
+        lat: -17.7833,
+        lng: -63.1821
+      },
+      {
+        id: 2,
+        status: 'Found',
+        name: 'Unknown Cat (Tabby)',
+        breed: 'Tabby Cat',
+        location: 'Urubó, Santa Cruz',
+        phone: '+591 7111-1111',
+        desc: 'Found wearing a blue collar in Urubó area.',
+        img: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80',
+        lat: -17.7650,
+        lng: -63.2100
+      }
+    ];
+
     document.addEventListener('DOMContentLoaded', () => {
-      // Mock login to skip to app
+      // Login interaction
       document.querySelector('#loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
         document.getElementById('authPage').classList.add('hidden');
         document.getElementById('app').classList.remove('hidden');
+        renderPets();
+      });
+
+      // Navigation switching
+      const navButtons = document.querySelectorAll('.desktop-nav button, .logo-button');
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const page = btn.getAttribute('data-page');
+          if(!page) return;
+
+          // Highlight nav button
+          document.querySelectorAll('.desktop-nav .nav-button').forEach(nb => nb.classList.remove('active'));
+          if(btn.classList.contains('nav-button')) btn.classList.add('active');
+
+          // Toggle pages
+          document.getElementById('homePage').classList.add('hidden');
+          document.getElementById('reportPage').classList.add('hidden');
+          document.getElementById('dashboardPage').classList.add('hidden');
+
+          if(page === 'home') document.getElementById('homePage').classList.remove('hidden');
+          if(page === 'report') document.getElementById('reportPage').classList.remove('hidden');
+          if(page === 'dashboard') {
+            document.getElementById('dashboardPage').classList.remove('hidden');
+            renderUserReports();
+          }
+        });
+      });
+
+      // Logout handler
+      document.getElementById('logoutButton').addEventListener('click', () => {
+        document.getElementById('app').classList.add('hidden');
+        document.getElementById('authPage').classList.remove('hidden');
       });
 
       // Toggle Map/List Views
@@ -281,20 +326,146 @@
           listView.classList.add('hidden');
           mapView.classList.remove('hidden');
           toggleBtn.innerHTML = '📋 List View';
-          // Initialize map if needed
-          if (!window.myMap) {
-            window.myMap = L.map('petMap').setView([-17.7833, -63.1821], 13); // Santa Cruz coordinates
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(window.myMap);
-          } else {
-            window.myMap.invalidateSize();
-          }
+          initMap();
         } else {
           listView.classList.remove('hidden');
           mapView.classList.add('hidden');
           toggleBtn.innerHTML = '📍 PetMap View';
         }
       });
+
+      // Handle New Report Submission
+      document.getElementById('reportForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const newPet = {
+          id: Date.now(),
+          status: document.getElementById('reportStatus').value,
+          name: document.getElementById('reportName').value,
+          breed: document.getElementById('reportBreed').value,
+          location: document.getElementById('reportLocation').value,
+          phone: document.getElementById('reportPhone').value,
+          desc: document.getElementById('reportDesc').value,
+          img: document.getElementById('reportImg').value,
+          // Random offset around Santa Cruz center for demo mapping
+          lat: -17.7833 + (Math.random() - 0.5) * 0.05,
+          lng: -63.1821 + (Math.random() - 0.5) * 0.05
+        };
+
+        petsData.unshift(newPet);
+        renderPets();
+
+        // Reset form and switch back to Home view
+        document.getElementById('reportForm').reset();
+        document.querySelector('[data-page="home"]').click();
+      });
     });
+
+    // Render Pets into Grid
+    function renderPets() {
+      const listView = document.getElementById('listView');
+      listView.innerHTML = '';
+
+      petsData.forEach(pet => {
+        const card = document.createElement('div');
+        card.className = 'pet-card';
+        const statusClass = pet.status === 'Lost' ? 'status-lost' : 'status-found';
+
+        card.innerHTML = `
+          <img src="${pet.img}" alt="${pet.name}" class="pet-card-img">
+          <div class="pet-card-info">
+            <span class="pet-card-status ${statusClass}">${pet.status}</span>
+            <div class="pet-card-title">${pet.name}</div>
+            <div class="pet-card-desc">📍 ${pet.location}</div>
+            <button class="outline-button" style="width:100%; margin-top: 15px;" onclick="openModal(${pet.id})">Info about pet</button>
+          </div>
+        `;
+        listView.appendChild(card);
+      });
+    }
+
+    // Render User Reports dashboard view
+    function renderUserReports() {
+      const userReportsView = document.getElementById('userReportsView');
+      userReportsView.innerHTML = '';
+
+      petsData.forEach(pet => {
+        const card = document.createElement('div');
+        card.className = 'pet-card';
+        const statusClass = pet.status === 'Lost' ? 'status-lost' : 'status-found';
+
+        card.innerHTML = `
+          <img src="${pet.img}" alt="${pet.name}" class="pet-card-img">
+          <div class="pet-card-info">
+            <span class="pet-card-status ${statusClass}">${pet.status}</span>
+            <div class="pet-card-title">${pet.name}</div>
+            <div class="pet-card-desc">📍 ${pet.location}</div>
+            <button class="outline-button" style="width:100%; margin-top: 15px;" onclick="openModal(${pet.id})">View Report</button>
+          </div>
+        `;
+        userReportsView.appendChild(card);
+      });
+    }
+
+    // Open Dynamic Modal Details
+    function openModal(id) {
+      const pet = petsData.find(p => p.id === id);
+      if(!pet) return;
+
+      const modalBody = document.getElementById('modalBody');
+      modalBody.innerHTML = `
+        <button class="modal-close" onclick="document.getElementById('petModal').close()">✕</button>
+        <h2 style="text-align: center; border-bottom: 2px solid var(--bg-light-gray); padding-bottom: 15px;">${pet.status} Pet Details</h2>
+        
+        <div class="detail-grid">
+          <div>
+            <img src="${pet.img}" alt="${pet.name}" class="detail-img-box">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 15px;">
+            <div class="detail-info-box">
+              <h3>Name, Breed & Contact</h3>
+              <p><strong>Name/Title:</strong> ${pet.name}</p>
+              <p><strong>Breed:</strong> ${pet.breed}</p>
+              <p><strong>Location:</strong> ${pet.location}</p>
+              <p><strong>Contact Phone:</strong> ${pet.phone}</p>
+            </div>
+            <div class="detail-info-box">
+              <h3>Characteristics & Info</h3>
+              <p>${pet.desc}</p>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('petModal').showModal();
+    }
+
+    // Leaflet Map Initialization
+    let mapInstance = null;
+    function initMap() {
+      if (!mapInstance) {
+        mapInstance = L.map('petMap').setView([-17.7833, -63.1821], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19
+        }).addTo(mapInstance);
+      } else {
+        mapInstance.invalidateSize();
+      }
+
+      // Clear existing markers if any
+      mapInstance.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+          mapInstance.removeLayer(layer);
+        }
+      });
+
+      // Add pins for all pets
+      petsData.forEach(pet => {
+        if(pet.lat && pet.lng) {
+          L.marker([pet.lat, pet.lng]).addTo(mapInstance)
+            .bindPopup(`<b>${pet.name}</b><br>${pet.status} in ${pet.location}<br><button onclick="openModal(${pet.id})" style="margin-top:5px;">View Info</button>`);
+        }
+      });
+    }
   </script>
 </body>
 </html>
