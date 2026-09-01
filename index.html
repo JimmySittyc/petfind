@@ -85,6 +85,7 @@
     .pet-card-status { display: inline-block; padding: 4px 10px; border-radius: var(--radius-pill); font-size: 0.8rem; font-weight: bold; margin-bottom: 8px; }
     .status-lost { background-color: #fff3cd; color: #856404; }
     .status-found { background-color: #d4edda; color: #155724; }
+    .status-reunited { background-color: #cce5ff; color: #004085; }
     .pet-card-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 4px; }
     .pet-card-desc { font-size: 0.9rem; color: var(--text-gray); }
 
@@ -245,36 +246,41 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
-  <script>
-    // State management for pets data
-    let petsData = [
-      {
-        id: 1,
-        status: 'Lost',
-        name: 'Max (Golden Retriever)',
-        breed: 'Golden Retriever',
-        location: 'Equipetrol, Santa Cruz',
-        phone: '+591 7000-0000',
-        desc: 'Last seen near Equipetrol. Friendly but shy. Wearing a red collar.',
-        img: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&q=80',
-        lat: -17.7833,
-        lng: -63.1821
-      },
-      {
-        id: 2,
-        status: 'Found',
-        name: 'Unknown Cat (Tabby)',
-        breed: 'Tabby Cat',
-        location: 'Urubó, Santa Cruz',
-        phone: '+591 7111-1111',
-        desc: 'Found wearing a blue collar in Urubó area.',
-        img: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80',
-        lat: -17.7650,
-        lng: -63.2100
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDIy47-9kwKCtaJu75oln7lMBpxUphWA_A",
+      authDomain: "don-bosco-theater.firebaseapp.com",
+      projectId: "don-bosco-theater",
+      storageBucket: "don-bosco-theater.firebasestorage.app",
+      messagingSenderId: "270986848021",
+      appId: "1:270986848021:web:49e21ab57699ca4eb32b1c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let petsData = [];
+
+    // Load pets data from Firestore on start
+    async function loadPets() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "found_pets"));
+        petsData = [];
+        querySnapshot.forEach((docSnap) => {
+          petsData.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        renderPets();
+      } catch (error) {
+        console.error("Error loading pets: ", error);
       }
-    ];
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
+      loadPets();
+
       // Login interaction
       document.querySelector('#loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
@@ -290,11 +296,9 @@
           const page = btn.getAttribute('data-page');
           if(!page) return;
 
-          // Highlight nav button
           document.querySelectorAll('.desktop-nav .nav-button').forEach(nb => nb.classList.remove('active'));
           if(btn.classList.contains('nav-button')) btn.classList.add('active');
 
-          // Toggle pages
           document.getElementById('homePage').classList.add('hidden');
           document.getElementById('reportPage').classList.add('hidden');
           document.getElementById('dashboardPage').classList.add('hidden');
@@ -335,11 +339,10 @@
       });
 
       // Handle New Report Submission
-      document.getElementById('reportForm').addEventListener('submit', (e) => {
+      document.getElementById('reportForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const newPet = {
-          id: Date.now(),
           status: document.getElementById('reportStatus').value,
           name: document.getElementById('reportName').value,
           breed: document.getElementById('reportBreed').value,
@@ -347,29 +350,41 @@
           phone: document.getElementById('reportPhone').value,
           desc: document.getElementById('reportDesc').value,
           img: document.getElementById('reportImg').value,
-          // Random offset around Santa Cruz center for demo mapping
           lat: -17.7833 + (Math.random() - 0.5) * 0.05,
-          lng: -63.1821 + (Math.random() - 0.5) * 0.05
+          lng: -63.1821 + (Math.random() - 0.5) * 0.05,
+          createdAt: Date.now()
         };
 
-        petsData.unshift(newPet);
-        renderPets();
+        try {
+          const docRef = await addDoc(collection(db, "found_pets"), newPet);
+          petsData.unshift({ id: docRef.id, ...newPet });
+          renderPets();
 
-        // Reset form and switch back to Home view
-        document.getElementById('reportForm').reset();
-        document.querySelector('[data-page="home"]').click();
+          document.getElementById('reportForm').reset();
+          document.querySelector('[data-page="home"]').click();
+        } catch (error) {
+          console.error("Error adding document: ", error);
+          alert("Error saving report to database.");
+        }
       });
     });
 
     // Render Pets into Grid
-    function renderPets() {
+    window.renderPets = function() {
       const listView = document.getElementById('listView');
       listView.innerHTML = '';
+
+      if (petsData.length === 0) {
+        listView.innerHTML = `<p style="color: var(--text-gray);">No pets reported yet.</p>`;
+        return;
+      }
 
       petsData.forEach(pet => {
         const card = document.createElement('div');
         card.className = 'pet-card';
-        const statusClass = pet.status === 'Lost' ? 'status-lost' : 'status-found';
+        let statusClass = 'status-lost';
+        if (pet.status === 'Found') statusClass = 'status-found';
+        if (pet.status === 'Reunited') statusClass = 'status-reunited';
 
         card.innerHTML = `
           <img src="${pet.img}" alt="${pet.name}" class="pet-card-img">
@@ -377,7 +392,7 @@
             <span class="pet-card-status ${statusClass}">${pet.status}</span>
             <div class="pet-card-title">${pet.name}</div>
             <div class="pet-card-desc">📍 ${pet.location}</div>
-            <button class="outline-button" style="width:100%; margin-top: 15px;" onclick="openModal(${pet.id})">Info about pet</button>
+            <button class="outline-button" style="width:100%; margin-top: 15px;" onclick="openModal('${pet.id}')">Info about pet</button>
           </div>
         `;
         listView.appendChild(card);
@@ -385,14 +400,21 @@
     }
 
     // Render User Reports dashboard view
-    function renderUserReports() {
+    window.renderUserReports = function() {
       const userReportsView = document.getElementById('userReportsView');
       userReportsView.innerHTML = '';
+
+      if (petsData.length === 0) {
+        userReportsView.innerHTML = `<p style="color: var(--text-gray);">You have not submitted any reports.</p>`;
+        return;
+      }
 
       petsData.forEach(pet => {
         const card = document.createElement('div');
         card.className = 'pet-card';
-        const statusClass = pet.status === 'Lost' ? 'status-lost' : 'status-found';
+        let statusClass = 'status-lost';
+        if (pet.status === 'Found') statusClass = 'status-found';
+        if (pet.status === 'Reunited') statusClass = 'status-reunited';
 
         card.innerHTML = `
           <img src="${pet.img}" alt="${pet.name}" class="pet-card-img">
@@ -400,19 +422,21 @@
             <span class="pet-card-status ${statusClass}">${pet.status}</span>
             <div class="pet-card-title">${pet.name}</div>
             <div class="pet-card-desc">📍 ${pet.location}</div>
-            <button class="outline-button" style="width:100%; margin-top: 15px;" onclick="openModal(${pet.id})">View Report</button>
+            <button class="outline-button" style="width:100%; margin-top: 15px;" onclick="openModal('${pet.id}')">View Report</button>
           </div>
         `;
         userReportsView.appendChild(card);
       });
     }
 
-    // Open Dynamic Modal Details
-    function openModal(id) {
+    // Open Dynamic Modal Details with Reunited Option
+    window.openModal = function(id) {
       const pet = petsData.find(p => p.id === id);
       if(!pet) return;
 
       const modalBody = document.getElementById('modalBody');
+      const isReunited = pet.status === 'Reunited';
+
       modalBody.innerHTML = `
         <button class="modal-close" onclick="document.getElementById('petModal').close()">✕</button>
         <h2 style="text-align: center; border-bottom: 2px solid var(--bg-light-gray); padding-bottom: 15px;">${pet.status} Pet Details</h2>
@@ -428,15 +452,41 @@
               <p><strong>Breed:</strong> ${pet.breed}</p>
               <p><strong>Location:</strong> ${pet.location}</p>
               <p><strong>Contact Phone:</strong> ${pet.phone}</p>
+              ${isReunited ? `<p style="margin-top:8px; color: #004085; font-weight:bold;">🎉 Reunited with Owner!</p>` : ''}
             </div>
             <div class="detail-info-box">
               <h3>Characteristics & Info</h3>
               <p>${pet.desc}</p>
             </div>
+            ${!isReunited ? `
+              <button class="primary-button" onclick="markReunited('${pet.id}')" style="background-color: #28a745;">Mark as Reunited with Owner</button>
+            ` : ''}
           </div>
         </div>
       `;
       document.getElementById('petModal').showModal();
+    }
+
+    // Function to update status to Reunited in Firestore
+    window.markReunited = async function(id) {
+      try {
+        const petRef = doc(db, "found_pets", id);
+        await updateDoc(petRef, {
+          status: "Reunited",
+          returnedAt: Date.now()
+        });
+
+        // Update local state
+        const pet = petsData.find(p => p.id === id);
+        if (pet) pet.status = "Reunited";
+
+        renderPets();
+        document.getElementById('petModal').close();
+        alert("Pet status updated to Reunited!");
+      } catch (error) {
+        console.error("Error updating status: ", error);
+        alert("Failed to update status.");
+      }
     }
 
     // Leaflet Map Initialization
@@ -451,18 +501,16 @@
         mapInstance.invalidateSize();
       }
 
-      // Clear existing markers if any
       mapInstance.eachLayer(layer => {
         if (layer instanceof L.Marker) {
           mapInstance.removeLayer(layer);
         }
       });
 
-      // Add pins for all pets
       petsData.forEach(pet => {
         if(pet.lat && pet.lng) {
           L.marker([pet.lat, pet.lng]).addTo(mapInstance)
-            .bindPopup(`<b>${pet.name}</b><br>${pet.status} in ${pet.location}<br><button onclick="openModal(${pet.id})" style="margin-top:5px;">View Info</button>`);
+            .bindPopup(`<b>${pet.name}</b><br>${pet.status} in ${pet.location}<br><button onclick="openModal('${pet.id}')" style="margin-top:5px;">View Info</button>`);
         }
       });
     }
