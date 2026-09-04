@@ -73,6 +73,14 @@
       display: flex; align-items: center; gap: 8px;
     }
 
+    /* FILTER BAR */
+    .filter-container {
+      background: white; padding: 20px; border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm); margin-bottom: 24px; border: 1px solid var(--border-color);
+      display: flex; gap: 20px; flex-wrap: wrap; align-items: center;
+    }
+    .filter-group { flex: 1; min-width: 220px; }
+
     /* PET GRID */
     .pet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; }
     .pet-card {
@@ -173,6 +181,30 @@
         <button id="toggleMapBtn" class="map-toggle-btn">
           📍 PetMap View
         </button>
+      </div>
+
+      <!-- FILTER CONTROLS BAR -->
+      <div class="filter-container">
+        <div class="filter-group">
+          <label class="field-label" style="margin-top:0;">Filter by Status</label>
+          <select id="filterStatus" class="form-input">
+            <option value="All">All Statuses</option>
+            <option value="Lost">Lost</option>
+            <option value="Found">Found</option>
+            <option value="Reunited">Reunited</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label class="field-label" style="margin-top:0;">Filter by Neighborhood</label>
+          <select id="filterArea" class="form-input">
+            <option value="All">All Neighborhoods</option>
+            <option value="Equipetrol">Equipetrol</option>
+            <option value="Urubó">Urubó</option>
+            <option value="Centro">Centro</option>
+            <option value="San Martin">San Martin</option>
+          </select>
+        </div>
       </div>
 
       <!-- LIST VIEW -->
@@ -281,6 +313,10 @@
     document.addEventListener('DOMContentLoaded', () => {
       loadPets();
 
+      // Bind filter changes to re-render feed
+      document.getElementById('filterStatus').addEventListener('change', renderPets);
+      document.getElementById('filterArea').addEventListener('change', renderPets);
+
       // Login interaction
       document.querySelector('#loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
@@ -369,17 +405,26 @@
       });
     });
 
-    // Render Pets into Grid
+    // Render Pets into Grid with Status & Neighborhood Filtering
     window.renderPets = function() {
       const listView = document.getElementById('listView');
       listView.innerHTML = '';
 
-      if (petsData.length === 0) {
-        listView.innerHTML = `<p style="color: var(--text-gray);">No pets reported yet.</p>`;
+      const statusFilter = document.getElementById('filterStatus')?.value || 'All';
+      const areaFilter = document.getElementById('filterArea')?.value || 'All';
+
+      const filteredPets = petsData.filter(pet => {
+        const matchesStatus = (statusFilter === 'All' || pet.status === statusFilter);
+        const matchesArea = (areaFilter === 'All' || pet.location.toLowerCase().includes(areaFilter.toLowerCase()));
+        return matchesStatus && matchesArea;
+      });
+
+      if (filteredPets.length === 0) {
+        listView.innerHTML = `<p style="color: var(--text-gray);">No pets match your selected filters.</p>`;
         return;
       }
 
-      petsData.forEach(pet => {
+      filteredPets.forEach(pet => {
         const card = document.createElement('div');
         card.className = 'pet-card';
         let statusClass = 'status-lost';
@@ -476,7 +521,6 @@
           returnedAt: Date.now()
         });
 
-        // Update local state
         const pet = petsData.find(p => p.id === id);
         if (pet) pet.status = "Reunited";
 
